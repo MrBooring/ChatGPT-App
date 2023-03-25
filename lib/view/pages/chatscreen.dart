@@ -32,12 +32,45 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
         title: Text("Chat-GPT"),
         actions: [
-          IconButton(
-              onPressed: () {},
-              icon: Icon(
-                Icons.more_vert_rounded,
-                color: Colors.white,
-              ))
+          PopupMenuButton(
+            color: scaffoldBackgroundColor,
+            icon: Icon(
+              Icons.more_vert_rounded,
+              color: Colors.white,
+            ),
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                  height: 35,
+                  onTap: () {
+                    chatscreenUiController.clearChat();
+                  },
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.delete,
+                        size: size.height * .025,
+                        color: Colors.white,
+                      ),
+                      SizedBox(
+                        width: size.width * .02,
+                      ),
+                      Text(
+                        "Clear Chat",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )
+                    ],
+                  ))
+            ],
+          )
+          // IconButton(
+          //     onPressed: () {},
+          //     icon: Icon(
+          //       Icons.more_vert_rounded,
+          //       color: Colors.white,
+          //     ))
         ],
       ),
       body: Obx(
@@ -46,13 +79,13 @@ class _ChatScreenState extends State<ChatScreen> {
             children: [
               Flexible(
                 child: ListView.builder(
+                  controller: chatscreenUiController.scrollController,
                   itemCount: chatscreenUiController.chatlist.length,
                   itemBuilder: (context, index) {
                     return ChatBubble(
-                      message: chatscreenUiController.chatlist[index].message
+                      message: chatscreenUiController.chatlist[index].content
                           .toString(),
-                      messageIndex:
-                          chatscreenUiController.chatlist[index].chatIndex,
+                      role: chatscreenUiController.chatlist[index].role,
                     );
                   },
                 ),
@@ -75,6 +108,8 @@ class _ChatScreenState extends State<ChatScreen> {
                       children: [
                         Expanded(
                           child: TextField(
+                            enabled: !chatscreenUiController.isTyping.value,
+                            focusNode: chatscreenUiController.focusNode,
                             style: TextStyle(color: Colors.white),
                             controller:
                                 chatscreenUiController.userinputcontroller,
@@ -88,7 +123,9 @@ class _ChatScreenState extends State<ChatScreen> {
                         ),
                         IconButton(
                           onPressed: () {
-                            chatscreenUiController.sendMessage();
+                            chatscreenUiController.isTyping.value
+                                ? null
+                                : chatscreenUiController.sendMessage();
                           },
                           icon: Icon(
                             Icons.send,

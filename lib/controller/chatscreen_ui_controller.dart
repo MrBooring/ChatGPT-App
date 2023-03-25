@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:chatgpt/models/chatmodel.dart';
 import 'package:chatgpt/provider/chat_provider.dart';
 import 'package:flutter/material.dart';
@@ -9,14 +11,40 @@ class ChatscreenUiController extends GetxController {
   TextEditingController userinputcontroller = TextEditingController();
   var chatlist = <ChatModel>[].obs;
 
+  FocusNode focusNode = FocusNode();
+  ScrollController scrollController = ScrollController();
+
   sendMessage() async {
-    chatlist.value = await ChatProviders.sendMessage(
-      message: "${userinputcontroller.text.toString()}",
-    );
+    try {
+      focusNode.unfocus();
+      chatlist.value
+          .add(ChatModel(content: userinputcontroller.text, role: 'user'));
+
+      //sending msg
+      chatlist.value.addAll(await ChatProviders.sendMessage(
+        messages: chatlist.value,
+      ));
+      userinputcontroller.clear();
+      scrollListtoEnd();
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+
+  void scrollListtoEnd() {
+    scrollController.animateTo(scrollController.position.maxScrollExtent,
+        duration: Duration(milliseconds: 500), curve: Curves.fastOutSlowIn);
+  }
+
+  void clearChat() {
+    chatlist.clear();
+    userinputcontroller.clear();
   }
 
   void dispose() {
     userinputcontroller.dispose();
+    scrollController.dispose();
+    focusNode.dispose();
     super.dispose();
   }
 }
