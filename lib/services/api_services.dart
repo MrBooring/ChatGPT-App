@@ -7,9 +7,11 @@ import 'package:http/http.dart' as http;
 
 class ApiService {
   static Future<void> getModels() async {
+    Constants constants = Constants();
+
     try {
-      var responce = await http.get(Uri.parse("$baseuri/v1/models"),
-          headers: {'Authorization': 'Bearer $key'});
+      var responce = await http.get(Uri.parse("${constants.baseuri}/v1/models"),
+          headers: {'Authorization': 'Bearer ${constants.key}'});
 
       Map jsonResponce = jsonDecode(responce.body);
       if (jsonResponce['error'] != null) {

@@ -10,19 +10,21 @@ import 'package:chatgpt/controller/chatscreen_ui_controller.dart';
 class ChatProviders {
   static Future<List<ChatModel>> sendMessage({required messages}) async {
     List<ChatModel> chatlist = [];
+    Constants constants = Constants();
+
     try {
       ChatscreenUiController chatscreenUiController =
           Get.find<ChatscreenUiController>();
       chatscreenUiController.isTyping.value = true;
       var responce = await http.post(
-        Uri.parse("$baseuri/v1/chat/completions"),
+        Uri.parse("${constants.baseuri}/v1/chat/completions"),
         headers: {
-          'Authorization': 'Bearer $key',
+          'Authorization': 'Bearer ${constants.key}',
           'Content-Type': 'application/json'
         },
         body: jsonEncode(
           {
-            "model": apiid,
+            "model": constants.apiid,
             "messages": messages,
             "max_tokens": 500,
           },

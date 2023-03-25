@@ -17,6 +17,8 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   ChatscreenUiController chatscreenUiController =
       Get.put(ChatscreenUiController());
+  Constants constants = Constants();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,45 +34,46 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
         title: Text("Chat-GPT"),
         actions: [
+          IconButton(
+            onPressed: () {
+              chatscreenUiController.changeKey(context);
+            },
+            icon: Icon(Icons.key),
+          ),
           PopupMenuButton(
-            color: scaffoldBackgroundColor,
+            color: constants.scaffoldBackgroundColor,
             icon: Icon(
               Icons.more_vert_rounded,
               color: Colors.white,
             ),
             itemBuilder: (context) => [
               PopupMenuItem(
-                  height: 35,
-                  onTap: () {
-                    chatscreenUiController.clearChat();
-                  },
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.delete,
-                        size: size.height * .025,
+                height: 40,
+                onTap: () {
+                  chatscreenUiController.clearChat();
+                },
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.delete,
+                      size: size.height * .025,
+                      color: Colors.white,
+                    ),
+                    SizedBox(
+                      width: size.width * .02,
+                    ),
+                    Text(
+                      "Clear Chat",
+                      style: TextStyle(
                         color: Colors.white,
+                        fontWeight: FontWeight.bold,
                       ),
-                      SizedBox(
-                        width: size.width * .02,
-                      ),
-                      Text(
-                        "Clear Chat",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      )
-                    ],
-                  ))
+                    )
+                  ],
+                ),
+              ),
             ],
           )
-          // IconButton(
-          //     onPressed: () {},
-          //     icon: Icon(
-          //       Icons.more_vert_rounded,
-          //       color: Colors.white,
-          //     ))
         ],
       ),
       body: Obx(
@@ -101,7 +104,7 @@ class _ChatScreenState extends State<ChatScreen> {
               Padding(
                 padding: EdgeInsets.only(top: 5),
                 child: Material(
-                  color: cardColor,
+                  color: constants.cardColor,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(

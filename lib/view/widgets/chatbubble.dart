@@ -13,10 +13,14 @@ class ChatBubble extends StatelessWidget {
   final String role;
   @override
   Widget build(BuildContext context) {
+    Constants constants = Constants();
+
     return Column(
       children: [
         Material(
-          color: role == 'user' ? scaffoldBackgroundColor : cardColor,
+          color: role == 'user'
+              ? constants.scaffoldBackgroundColor
+              : constants.cardColor,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
