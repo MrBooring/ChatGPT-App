@@ -1,4 +1,5 @@
-import 'package:chatgpt/view/pages/chatscreen.dart';
+import 'package:chatgpt/binders/chatscreenbinder.dart';
+import 'package:chatgpt/view/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -11,7 +12,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 //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
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     Constants constants = Constants();
@@ -23,7 +23,8 @@ class MyApp extends StatelessWidget {
           appBarTheme: AppBarTheme(
             color: constants.cardColor,
           )),
-      home: ChatScreen(),
+      getPages: routes,
+      initialRoute: '/',
     );
   }
 }

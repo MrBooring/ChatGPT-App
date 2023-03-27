@@ -1,22 +1,11 @@
 import 'package:chatgpt/constants/constants.dart';
 import 'package:chatgpt/controller/chatscreen_ui_controller.dart';
-import 'package:chatgpt/provider/chat_provider.dart';
-import 'package:chatgpt/services/api_services.dart';
 import 'package:chatgpt/view/widgets/chatbubble.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 
-class ChatScreen extends StatefulWidget {
-  const ChatScreen({super.key});
-
-  @override
-  State<ChatScreen> createState() => _ChatScreenState();
-}
-
-class _ChatScreenState extends State<ChatScreen> {
-  ChatscreenUiController chatscreenUiController =
-      Get.put(ChatscreenUiController());
+class ChatScreen extends GetView<ChatscreenUiController> {
   Constants constants = Constants();
 
   @override
@@ -36,7 +25,7 @@ class _ChatScreenState extends State<ChatScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              chatscreenUiController.changeKey(context);
+              controller.changeKey(context);
             },
             icon: Icon(Icons.key),
           ),
@@ -50,7 +39,7 @@ class _ChatScreenState extends State<ChatScreen> {
               PopupMenuItem(
                 height: 40,
                 onTap: () {
-                  chatscreenUiController.clearChat();
+                  controller.clearChat();
                 },
                 child: Row(
                   children: [
@@ -82,19 +71,18 @@ class _ChatScreenState extends State<ChatScreen> {
             children: [
               Flexible(
                 child: ListView.builder(
-                  controller: chatscreenUiController.scrollController,
-                  itemCount: chatscreenUiController.chatlist.length,
+                  controller: controller.scrollController,
+                  itemCount: controller.chatlist.length,
                   itemBuilder: (context, index) {
                     return ChatBubble(
-                      message: chatscreenUiController.chatlist[index].content
-                          .toString(),
-                      role: chatscreenUiController.chatlist[index].role,
+                      message: controller.chatlist[index].content.toString(),
+                      role: controller.chatlist[index].role,
                     );
                   },
                 ),
               ),
               SizedBox(
-                child: chatscreenUiController.isTyping == true
+                child: controller.isTyping == true
                     ? SpinKitThreeBounce(
                         color: Colors.white,
                         size: size.height * .02,
@@ -111,11 +99,10 @@ class _ChatScreenState extends State<ChatScreen> {
                       children: [
                         Expanded(
                           child: TextField(
-                            enabled: !chatscreenUiController.isTyping.value,
-                            focusNode: chatscreenUiController.focusNode,
+                            enabled: !controller.isTyping.value,
+                            focusNode: controller.focusNode,
                             style: TextStyle(color: Colors.white),
-                            controller:
-                                chatscreenUiController.userinputcontroller,
+                            controller: controller.userinputcontroller,
                             onSubmitted: (value) {
                               //todo send message
                             },
@@ -126,9 +113,9 @@ class _ChatScreenState extends State<ChatScreen> {
                         ),
                         IconButton(
                           onPressed: () {
-                            chatscreenUiController.isTyping.value
+                            controller.isTyping.value
                                 ? null
-                                : chatscreenUiController.sendMessage();
+                                : controller.sendMessage();
                           },
                           icon: Icon(
                             Icons.send,

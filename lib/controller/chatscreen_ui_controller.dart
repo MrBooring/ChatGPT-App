@@ -6,17 +6,30 @@ import 'package:chatgpt/provider/chat_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
-import 'package:url_launcher/url_launcher.dart';
+
+import 'shared_preff_controller.dart';
 
 class ChatscreenUiController extends GetxController {
   var isTyping = false.obs;
+  var chatlist = <ChatModel>[].obs;
+  var key = "".obs;
   TextEditingController userinputcontroller = TextEditingController();
   TextEditingController apikeycontroller = TextEditingController();
-  var chatlist = <ChatModel>[].obs;
   Constants constants = Constants();
 
   FocusNode focusNode = FocusNode();
   ScrollController scrollController = ScrollController();
+  SharedPreffController sharedPreffController =
+      Get.put(SharedPreffController());
+
+  void onInit() {
+    sharedPreffController.findKey().then((val) {
+      if (val != null) {
+        key.value = val;
+      }
+    });
+    super.onInit();
+  }
 
   sendMessage() async {
     try {
@@ -107,13 +120,10 @@ class ChatscreenUiController extends GetxController {
     });
   }
 
-  void keychanged() {
-    constants.key = apikeycontroller.text;
-    Get.snackbar(
-      "New Key Found",
-      "Your New Key is ${constants.key} Please verify it before using",
-      colorText: const Color(0xFFFFFFFF),
-    );
+  void keychanged() async {
+    key.value = apikeycontroller.text;
+
+    sharedPreffController.saveKey(key.value);
   }
 
   void dispose() {

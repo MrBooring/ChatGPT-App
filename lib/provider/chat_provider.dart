@@ -19,7 +19,7 @@ class ChatProviders {
       var responce = await http.post(
         Uri.parse("${constants.baseuri}/v1/chat/completions"),
         headers: {
-          'Authorization': 'Bearer ${constants.key}',
+          'Authorization': 'Bearer ${chatscreenUiController.key.value}',
           'Content-Type': 'application/json'
         },
         body: jsonEncode(

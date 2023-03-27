@@ -7,6 +7,6 @@ class Constants {
   Color scaffoldBackgroundColor = const Color(0xFF343541);
   Color cardColor = const Color(0xFF444654);
   String baseuri = "https://api.openai.com";
-  String key = "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";
+
   String apiid = "gpt-3.5-turbo";
 }
