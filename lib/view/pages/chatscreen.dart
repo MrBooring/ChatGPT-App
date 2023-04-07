@@ -21,7 +21,7 @@ class ChatScreen extends GetView<ChatscreenUiController> {
             // scale: size.width * .01,
           ),
         ),
-        title: Text("Chat-GPT"),
+        title: Text("Insight X"),
         actions: [
           IconButton(
             onPressed: () {

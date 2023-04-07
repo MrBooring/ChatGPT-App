@@ -34,6 +34,7 @@ class ChatscreenUiController extends GetxController {
   sendMessage() async {
     try {
       focusNode.unfocus();
+
       chatlist.value
           .add(ChatModel(content: userinputcontroller.text, role: 'user'));
 
@@ -44,7 +45,7 @@ class ChatscreenUiController extends GetxController {
       userinputcontroller.clear();
       scrollListtoEnd();
     } catch (e) {
-      log(e.toString());
+      Get.snackbar("Error", "$e");
     }
   }
 

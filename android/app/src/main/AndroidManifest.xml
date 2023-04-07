@@ -2,7 +2,7 @@
     package="com.example.chatgpt">
     <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="chatgpt"
+        android:label="Insight X"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity

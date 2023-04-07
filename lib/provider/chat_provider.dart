@@ -30,25 +30,30 @@ class ChatProviders {
           },
         ),
       );
-
-      Map jsonResponce = jsonDecode(responce.body);
-      if (jsonResponce['error'] != null) {
-        Get.snackbar("Error", jsonResponce['error']['message'].toString(),
-            colorText: const Color(0xFFFFFFFF));
-      }
-
-      if (jsonResponce['choices'] != null) {
-        if (jsonResponce['choices'].length > 0) {
-          log(jsonResponce['choices'][0]['message']['content'].toString());
-          chatlist = List.generate(
-            jsonResponce['choices'].length,
-            (index) => ChatModel(
-                content: jsonResponce['choices'][0]['message']['content'],
-                role: "assistant"),
-          );
+      if (responce.statusCode == 200) {
+        Map jsonResponce = jsonDecode(responce.body);
+        if (jsonResponce['error'] != null) {
+          Get.snackbar("Error", jsonResponce['error']['message'].toString(),
+              colorText: const Color(0xFFFFFFFF));
         }
+
+        if (jsonResponce['choices'] != null) {
+          if (jsonResponce['choices'].length > 0) {
+            // log(jsonResponce['choices'][0]['message']['content'].toString());
+            chatlist = List.generate(
+              jsonResponce['choices'].length,
+              (index) => ChatModel(
+                  content: jsonResponce['choices'][0]['message']['content'],
+                  role: "assistant"),
+            );
+          }
+        }
+        chatscreenUiController.isTyping.value = false;
+      } else {
+        Get.snackbar(
+            "Error ${responce.statusCode}", "${responce.reasonPhrase}");
+        chatscreenUiController.isTyping.value = false;
       }
-      chatscreenUiController.isTyping.value = false;
     } catch (e) {
       Get.snackbar("Error", e.toString(), colorText: const Color(0xFFFFFFFF));
     }

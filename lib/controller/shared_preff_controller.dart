@@ -7,7 +7,7 @@ class SharedPreffController extends GetxController {
   findKey() async {
     // ChatscreenUiController chatscreenUiController =
     //     Get.find<ChatscreenUiController>();
-    print("hi");
+
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? keys = prefs.getString('key');
     if (keys != null) {
